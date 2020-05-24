@@ -1,4 +1,4 @@
-class CardList {
+export class CardList {
   constructor(elem, makeCard, api, userInfo) {
     this.elem = elem;
     this.makeCard = makeCard;
@@ -23,9 +23,9 @@ class CardList {
           const card = this.makeCard(data.name, data.link, data._id, isMine);
           this.addCard(card);
         })
-        .catch((err) => {
+        /* .catch((err) => {
           console.log(err); 
-        });
+        }); */
     })
   }
 }
