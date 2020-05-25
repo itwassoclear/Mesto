@@ -1,7 +1,7 @@
 import "./index.css";
 import {Api} from "./scripts/Api.js";
 import {Card} from "./scripts/Card.js";
-import {CardList} from "./scripts/Cardlist.js";
+import {CardList} from "./scripts/CardList.js";
 import {Popup} from "./scripts/Popup.js";
 import {UserInfo} from "./scripts/UserInfo.js";
 import {FormValidator} from "./scripts/FormValidator.js";
@@ -18,10 +18,8 @@ const popupImage = document.querySelector('.popup-image'); // Попап отк�
 const popupAvatar = document.querySelector('.popup-avatar'); // Попап редактирования аватара
 const popupClose = document.querySelector('.popup__close'); // Кнопка закрытия попапа
 const popupCloseEdit = document.querySelector('.popup__close_edit'); // Кнопка закрытия попапа редактирования профиля
-// const popupCloseAvatar = document.querySelector('.popup__close_avatar') // Кнопка закрытия попапа редактирования аватара
 const userInfoButton = document.querySelector('.user-info__button');  // Кнопка открытия попапа добавления карточек
 const userInfoButtonEdit = document.querySelector('.user-info__button-edit'); // Кнопка открытия попапа редактирования профиля
-const userAvatarUpdate = document.querySelector('.popup__button-avatar'); // Кнопка сабмита формы в попапе Обновить аватар
 const userInfoName = document.querySelector('.user-info__name'); // Сохранённое Имя
 const userInfoJob = document.querySelector('.user-info__job'); // Сохранённое О себе
 
@@ -126,8 +124,6 @@ form.addEventListener('submit', (event) => {
 popupClose.addEventListener('click', (event) => {
   popup.close();
   clearErrors();
-  // form.reset(); пока закомментировала. так если закрыть окно и открыть снова - набранный в первый раз текст сохранится
-  // на случай если закрыли окно случайно, чтобы не вводить информацию снова
   buttonDisabled();
 });
 

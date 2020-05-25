@@ -1,7 +1,7 @@
 {
   "name": "mesto",
   "version": "1.0.0",
-  "description": "",
+  "description": "web interface for interacting with the server",
   "main": "index.js",
   "scripts": {
     "build": "NODE_ENV=production rimraf dist && webpack --mode production",

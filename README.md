@@ -21,6 +21,17 @@ HTML, CSS, BEM, JS (ES5 / ES6), API, GIT, Webpack
 
 Реализована валидация форм, прописаны запросы к серверу, использован синтаксис ES6 классов. Сборка кода выполнена с применением Webpack.
 
+## Настройка сборки
 
+```
+# клон репозитория
+$ git clone https://github.com/itwassoclear/Mesto.git
+
+# установка зависимостей
+$ npm install
+
+# локальный сервер для препросмотра
+$ npm run dev
+```
 
 Приложение доступно по [ссылке](https://itwassoclear.github.io/Mesto)
