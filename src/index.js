@@ -22,10 +22,10 @@ const userInfoButton = document.querySelector('.user-info__button');  // Кно�
 const userInfoButtonEdit = document.querySelector('.user-info__button-edit'); // Кнопка открытия попапа редактирования профиля
 const userInfoName = document.querySelector('.user-info__name'); // Сохранённое Имя
 const userInfoJob = document.querySelector('.user-info__job'); // Сохранённое О себе
+const serverUrl = NODE_ENV === 'development' ? 'http://praktikum.tk/cohort10' : 'https://praktikum.tk/cohort10';
 
-// Отлично: токен и адрес сервера вынесены в константы и не зашиты внутрь класса, а передаются параметром в конструктор.
 const api = new Api({
-  baseUrl: 'https://praktikum.tk/cohort10',
+  baseUrl: serverUrl,
   headers: {
     authorization: '21742853-5451-43fe-a816-3296501b9770',
     'Content-Type': 'application/json'
