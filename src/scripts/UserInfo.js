@@ -1,10 +1,11 @@
-class UserInfo {
-  constructor(form, userName, userData, avatar, api) {
+export class UserInfo {
+  constructor(form, userName, userData, userPhoto, api, avatar) {
     this.form = form;
     this.userName = userName;
     this.userData = userData;
-    this.avatar = avatar;
+    this.userPhoto = userPhoto;
     this.api = api;
+    this.avatar = avatar;
     this.id = null;
   }
   
@@ -16,6 +17,7 @@ class UserInfo {
     this.id = _id;
     this.userName.textContent= data.name;
     this.userData.textContent= data.about;
+    this.userPhoto.style = `background: url(${data.avatar}); background-size: cover`;
     })
     .catch((err) => {
       console.log(err); 
@@ -34,9 +36,8 @@ class UserInfo {
     this.userData.textContent = data.about;
   }
 
-  updateUserAvatar() {
-    this.elem.innerHTML = `<img src="${avatar}" class="user-info__avatar">`
-    // this.avatar.style.backgroundImage = `url(${data.avatar})`;
+  updateUserAvatar(data) {
+    this.userPhoto.style = `background: url(${data.avatar}); background-size: cover`;
   }
 
   // Получаем айдишник пользователя

@@ -1,34 +1,10 @@
-/*
- * Прощу прошения, я допустил ошибку:
- * Расписал ошибку в классе Card, хотя данный комментарий предназначался для класса Api.
- * Суть в том, что там не нужен блок catch в методах класса Api.
- * Таким образом нам необходимо вернуть catch в Card.delete() и убрать из методов класса Api.
- * 
- * ))))))))))))))))))
- *
- * Ревью
- * Поздравляю, теперь вы научились работать с сервером: получать данные и отправлять их.
- * Функционал работает без багов. Дополнительные задания, отмеченные "+", также работают.
- * Работа с сервером вынесена в отдельный класс.
- *
- * Есть несколько небольших замечаний, после исправления которых работа будет принята.
- *
- * Внимание: работа принимается после исправления всех замечаний с пометкой "Надо исправить".
- */
-
-'use strict';
-
-// 1. Загрузка информации о пользователе с сервера +
-// 2. Загрузка первоначальных карточек с сервера +
-// 3. Редактирование профиля +
-// --------------------------
-// 4. Добавление новой карточки +
-// 5. Отображение количества лайков карточки
-// 6. Удаление карточки +
-// 7. Постановка и снятие лайка
-// 8. Обновление аватара пользователя
-// 9. Улучшенный UX при редактировании профиля
-// 10. Улучшенный UX при добавлении карточки
+import "./index.css";
+import {Api} from "./scripts/Api.js";
+import {Card} from "./scripts/Card.js";
+import {CardList} from "./scripts/CardList.js";
+import {Popup} from "./scripts/Popup.js";
+import {UserInfo} from "./scripts/UserInfo.js";
+import {FormValidator} from "./scripts/FormValidator.js";
 
 const cardArea = document.querySelector('.places-list'); // Контейнер, где лежат карточки
 const popupFormEdit = document.querySelector('.popup__form_edit'); // Форма редактировать профиль
@@ -42,23 +18,21 @@ const popupImage = document.querySelector('.popup-image'); // Попап отк�
 const popupAvatar = document.querySelector('.popup-avatar'); // Попап редактирования аватара
 const popupClose = document.querySelector('.popup__close'); // Кнопка закрытия попапа
 const popupCloseEdit = document.querySelector('.popup__close_edit'); // Кнопка закрытия попапа редактирования профиля
-// const popupCloseAvatar = document.querySelector('.popup__close_avatar') // Кнопка закрытия попапа редактирования аватара
 const userInfoButton = document.querySelector('.user-info__button');  // Кнопка открытия попапа добавления карточек
 const userInfoButtonEdit = document.querySelector('.user-info__button-edit'); // Кнопка открытия попапа редактирования профиля
-const userAvatarUpdate = document.querySelector('.popup__button-avatar'); // Кнопка сабмита формы в попапе Обновить аватар
 const userInfoName = document.querySelector('.user-info__name'); // Сохранённое Имя
 const userInfoJob = document.querySelector('.user-info__job'); // Сохранённое О себе
+const serverUrl = NODE_ENV === 'development' ? 'http://praktikum.tk/cohort10' : 'https://praktikum.tk/cohort10';
 
-// Отлично: токен и адрес сервера вынесены в константы и не зашиты внутрь класса, а передаются параметром в конструктор.
 const api = new Api({
-  baseUrl: 'https://praktikum.tk/cohort10',
+  baseUrl: serverUrl,
   headers: {
     authorization: '21742853-5451-43fe-a816-3296501b9770',
     'Content-Type': 'application/json'
   }
 });
 
-const userInfo = new UserInfo(popupFormEdit, userInfoName, userInfoJob, avatar, api);
+const userInfo = new UserInfo(popupFormEdit, userInfoName, userInfoJob, userPhoto, api, avatar);
 userInfo.userInfoLoad();
 
 const createCard = (name, link, id, isMine) => new Card (name, link, id, isMine, api);
@@ -100,7 +74,7 @@ function buttonDisabled () {
 function onCardClick (event) {
   if (event.target.classList.contains('place-card__image')) {
     popupImg.open();
-    popupImage.innerHTML = '<div class="popup__content_image"> <img class="popup__img-zoom" alt="Изображение места" src='+ event.target.style.backgroundImage.slice(4, -1) +'> <img src="./images/close.svg" alt="" class="popup__close_image"></div>';
+    popupImage.innerHTML = '<div class="popup__content_image"> <img class="popup__img-zoom" alt="Изображение места" src='+ event.target.style.backgroundImage.slice(4, -1) +'> <img src="./img/close.svg" alt="close" class="popup__close_image"></div>';
   }
 
   const popupCloseImage = document.querySelector('.popup__close_image');
@@ -150,8 +124,6 @@ form.addEventListener('submit', (event) => {
 popupClose.addEventListener('click', (event) => {
   popup.close();
   clearErrors();
-  // form.reset(); пока закомментировала. так если закрыть окно и открыть снова - набранный в первый раз текст сохранится
-  // на случай если закрыли окно случайно, чтобы не вводить информацию снова
   buttonDisabled();
 });
 
@@ -177,7 +149,6 @@ popupFormEdit.addEventListener('submit', (event) => {
   .catch((err) => {
     console.log(err); 
   });
-  
   buttonDisabled();
 });
 
@@ -194,7 +165,20 @@ userPhoto.addEventListener('click', editAvatar);
 // Обновление аватара
 formAvatar.addEventListener('submit', (event) => {
   event.preventDefault();
-  userInfo.updateUserAvatar();
+  formValidatorAvatar.setEventListeners();
+
+  const avatar = event.target.querySelector('.popup__input_type_link-url').value;
+  api.updateUserAvatarApi(avatar)
+  .then(data => {
+    userInfo.updateUserAvatar(data);
+    popupAvtr.close();
+    document.querySelector('.popup__button-avatar').classList.add('popup__button_disabled');
+    formAvatar.reset();
+  })
+  .catch((err) => {
+    console.log(err); 
+  });
+  buttonDisabled();
 });
 
 cardArea.addEventListener('click', onCardClick);

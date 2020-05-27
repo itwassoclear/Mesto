@@ -1,4 +1,4 @@
-class Api {
+export class Api {
   constructor({baseUrl, headers}) {
     this.baseUrl = baseUrl;
     this.headers = headers;
@@ -37,22 +37,22 @@ class Api {
     })
   }
 
-  // // Обновление аватара
-  // updateUserAvatarApi(avatar) {
-  //   return fetch(`${this.baseUrl}/users/me/avatar`, {
-  //     method: 'PATCH',
-  //     headers: this.headers,
-  //     body: JSON.stringify({
-  //       avatar: avatar
-  //     })
-  //   })
-  //   .then(res => {
-  //     if (res.ok) {
-  //       return res.json();
-  //     }
-  //     return Promise.reject(`Ошибка: ${res.status}`);
-  //   })
-  // }
+// Обновление аватара
+  updateUserAvatarApi(avatar) {
+    return fetch(`${this.baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: this.headers,
+      body: JSON.stringify({
+        avatar: avatar
+      })
+    })
+    .then(res => {
+      if (res.ok) {
+        return res.json();
+      }
+      return Promise.reject(`Ошибка: ${res.status}`);
+    })
+  }
 
   // Запрашиваем карточки
   getInitialCards() {
